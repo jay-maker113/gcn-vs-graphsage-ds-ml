@@ -2,18 +2,18 @@
 
 This project compares **Graph Convolutional Networks (GCN)** and **GraphSAGE** on the **OGBN-Arxiv** node classification benchmark using **PyTorch Geometric**.
 
-It evaluates how different Graph Neural Network architectures perform on a large-scale citation network.
+The goal is to understand how different Graph Neural Network (GNN) architectures perform on large-scale citation networks.
 
 ---
 
 ## 📊 Dataset
 
-**OGBN-Arxiv**  
-- Nodes: Research papers  
-- Edges: Citation links  
-- Task: Node classification (subject area)  
-- Classes: 40  
-- Benchmark provided by **Open Graph Benchmark (OGB)**
+**OGBN-Arxiv** (Open Graph Benchmark)
+
+- **Nodes:** Research papers  
+- **Edges:** Citation relationships  
+- **Task:** Node classification (predict paper subject area)  
+- **Classes:** 40  
 
 The graph is converted to **undirected** during preprocessing.
 
@@ -24,13 +24,13 @@ The graph is converted to **undirected** during preprocessing.
 ### 🔹 GCN (Graph Convolutional Network)
 - 2-layer GCN using `GCNConv`
 - ReLU activation
-- Standard spectral graph convolution
+- Full-graph convolution
 
 ### 🔹 GraphSAGE
 - 2-layer GraphSAGE using `SAGEConv`
 - ReLU activation
 - Dropout regularization
-- Inductive neighborhood aggregation
+- Neighborhood feature aggregation
 
 ---
 
@@ -44,22 +44,46 @@ The graph is converted to **undirected** during preprocessing.
 | Hidden Dimension | 32 |
 | Epochs | 300 |
 | Loss Function | Cross Entropy |
-
-Evaluation metric is **Accuracy**, computed using the official OGB evaluator.
+| Evaluation Metric | Accuracy (OGB Evaluator) |
 
 ---
 
-## 📈 Outputs
+## 📊 Model Comparison Results
 
-During training, the following are tracked:
-- Training Accuracy
-- Validation Accuracy
-- Test Accuracy
-- Loss
+Both models were trained for **300 epochs** on the **OGBN-Arxiv** dataset using identical hyperparameters.
 
-Training curves are saved as:
+| Model | Final Train Accuracy | Final Validation Accuracy | Final Test Accuracy |
+|------|----------------------|---------------------------|---------------------|
+| GCN | ~0.67 | ~0.66 | ~0.66 |
+| GraphSAGE | ~0.68 | ~0.67 | ~0.67 |
 
-<img width="1000" height="600" alt="training_curves_sage" src="https://github.com/user-attachments/assets/ebec2b77-03d5-42b6-a826-f4c5ec2f58c7" />
-<img width="1000" height="600" alt="training_curves_gcn" src="https://github.com/user-attachments/assets/fb64f681-4ce3-4a7f-8bcb-7ae5adfc359d" />
+📌 **GraphSAGE slightly outperforms GCN in validation and test accuracy**, likely due to its neighborhood sampling and inductive aggregation strategy.
 
+Training curves for both models are saved as:
+
+<img width="1000" height="600" alt="training_curves_sage" src="https://github.com/user-attachments/assets/0ff1059c-db79-4dc8-bd18-f5ad7aa29fde" />
+<img width="1000" height="600" alt="training_curves_gcn" src="https://github.com/user-attachments/assets/8ef13728-1e36-4e16-ae81-265777bed0a4" />
+
+These plots show loss decreasing steadily while accuracy improves and stabilizes.
+
+---
+
+## 🧠 Architectural Insight
+
+GCN performs full-graph convolution, which can **oversmooth features** in deep training.
+
+GraphSAGE aggregates neighbor features in a more flexible way, helping it **generalize better on large citation graphs** like OGBN-Arxiv.
+
+---
+
+## 📈 Outputs Generated
+
+After training, the project produces:
+
+| File | Description |
+|------|-------------|
+| `gcn_model_final.pth` | Trained GCN model weights |
+| `sage_model_final.pth` | Trained GraphSAGE model weights |
+| `training_curves_gcn.png` | GCN training loss & accuracy curves |
+| `training_curves_sage.png` | GraphSAGE training curves |
 
