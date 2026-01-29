@@ -59,3 +59,7 @@ During training, the following are tracked:
 
 Training curves are saved as:
 
+<img width="1000" height="600" alt="training_curves_sage" src="https://github.com/user-attachments/assets/ebec2b77-03d5-42b6-a826-f4c5ec2f58c7" />
+<img width="1000" height="600" alt="training_curves_gcn" src="https://github.com/user-attachments/assets/fb64f681-4ce3-4a7f-8bcb-7ae5adfc359d" />
+
+
